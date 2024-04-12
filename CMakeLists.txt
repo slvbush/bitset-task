@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.21)
-project(template)
+project(bitset)
 
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Catch2 REQUIRED)
 
+file(GLOB SOLUTION_SRC src/*.cpp)
 file(GLOB TEST_SRC test/*.cpp)
-add_executable(tests ${TEST_SRC})
+
+add_executable(tests ${TEST_SRC} ${SOLUTION_SRC})
 
 target_include_directories(tests PRIVATE src test)
 
