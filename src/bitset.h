@@ -60,8 +60,8 @@ public:
   operator const_view() const;
   operator view();
 
-  view subview(std::size_t from = 0, std::size_t count = npos);
-  const_view subview(std::size_t from = 0, std::size_t count = npos) const;
+  view subview(std::size_t offset = 0, std::size_t count = npos);
+  const_view subview(std::size_t offset = 0, std::size_t count = npos) const;
 };
 
 bool operator==(const bitset& left, const bitset& right);
