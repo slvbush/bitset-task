@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(Catch2 REQUIRED)
 
-file(GLOB SOLUTION_SRC src/*.cpp)
-file(GLOB TEST_SRC test/*.cpp)
+file(GLOB SOLUTION_SRC src/*.cpp src/*.h)
+file(GLOB TEST_SRC test/*.cpp test/*.h)
 
 add_executable(tests ${TEST_SRC} ${SOLUTION_SRC})
 
