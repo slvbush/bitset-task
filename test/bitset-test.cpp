@@ -6,10 +6,9 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/matchers/catch_matchers.hpp>
 
-#include <algorithm>
 #include <random>
+#include <sstream>
 #include <string>
-#include <utility>
 
 TEST_CASE("bitset default constructor") {
   bitset bs;
@@ -159,5 +158,5 @@ TEST_CASE("ostream << bitset") {
 
   std::stringstream ss;
   ss << bs;
-  REQUIRE(ss.view() == str);
+  REQUIRE(ss.str() == str);
 }
