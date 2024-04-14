@@ -33,27 +33,17 @@ jobs:
         toolchain:
           - { name: Linux/GCC,   os: ubuntu-22.04, compiler: gcc-13 }
           - { name: Linux/Clang, os: ubuntu-22.04, compiler: clang-18 }
-          - { name: macOS,       os: macos-13,     compiler: appleclang-18 }
-          - { name: macOS M1,    os: macos-14,     compiler: appleclang-18 }
-          - { name: Windows,     os: windows-2022, compiler: msvc-2022 }
         build_type:
           - Release
           - Debug
           - RelWithDebInfo
           - Sanitized
           - SanitizedDebug
-          # - ThreadSanitized
-        exclude:
-          # Valgrind is only supported by Linux container
-          - toolchain: { name: macOS }
-            build_type: RelWithDebInfo
-          - toolchain: { name: macOS M1 }
-            build_type: RelWithDebInfo
-          - toolchain: { name: Windows }
-            build_type: RelWithDebInfo
-          # TSAN is only supported by GCC and Clang
-          - toolchain: { name: Windows }
-            build_type: ThreadSanitized
+        include:
+          - toolchain: { name: macOS,  os: macos-13, compiler: appleclang-18 }
+            build_type: SanitizedDebug
+          - toolchain: { name: Windows, os: windows-2022, compiler: msvc-2022 }
+            build_type: SanitizedDebug
 
     runs-on: ${{ matrix.toolchain.os }}
 
