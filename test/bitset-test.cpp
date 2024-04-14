@@ -134,8 +134,8 @@ TEST_CASE("bitset constructor from view") {
     const bitset source(str);
 
     auto [offset, count] = GENERATE(table<std::size_t, std::size_t>({
-        { 0, 80},
-        { 1, 79},
+        {0, 80},
+        {1, 79},
         {60, 10},
         {10, 60},
     }));
