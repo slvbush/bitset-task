@@ -20,7 +20,7 @@ TEST_CASE("left shift") {
       bs <<= shift_count;
 
       str.append(shift_count, '0');
-      REQUIRE_THAT(bs, bitset_equals_string(str));
+      CHECK_THAT(bs, bitset_equals_string(str));
     }
 
     SECTION("with reallocation") {
@@ -30,7 +30,7 @@ TEST_CASE("left shift") {
       bs <<= shift_count;
 
       str.append(shift_count, '0');
-      REQUIRE_THAT(bs, bitset_equals_string(str));
+      CHECK_THAT(bs, bitset_equals_string(str));
     }
   }
 
@@ -44,7 +44,7 @@ TEST_CASE("left shift") {
     bs <<= shift_count;
 
     str.append(shift_count, '0');
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 
   SECTION("multiple words") {
@@ -57,7 +57,7 @@ TEST_CASE("left shift") {
     bs <<= shift_count;
 
     str.append(shift_count, '0');
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 }
 
@@ -70,9 +70,9 @@ TEST_CASE("right shift") {
 
     bs >>= shift_count;
 
-    REQUIRE(bs.empty());
-    REQUIRE(bs.size() == 0);
-    REQUIRE(bs.begin() == bs.end());
+    CHECK(bs.empty());
+    CHECK(bs.size() == 0);
+    CHECK(bs.begin() == bs.end());
   }
 
   SECTION("single word") {
@@ -87,7 +87,7 @@ TEST_CASE("right shift") {
     std::size_t erased = std::min(shift_count, str.size());
     str.erase(str.size() - erased);
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 
   SECTION("single word") {
@@ -102,7 +102,7 @@ TEST_CASE("right shift") {
     std::size_t erased = std::min(shift_count, str.size());
     str.erase(str.size() - erased);
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 
   SECTION("multiple words") {
@@ -117,7 +117,7 @@ TEST_CASE("right shift") {
     std::size_t erased = std::min(shift_count, str.size());
     str.erase(str.size() - erased);
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 }
 
@@ -196,17 +196,17 @@ TEST_CASE("bitwise operations") {
 
     SECTION("flip") {
       lhs.flip();
-      REQUIRE_THAT(lhs, bitset_equals_string("0010010"));
+      CHECK_THAT(lhs, bitset_equals_string("0010010"));
     }
 
     SECTION("set") {
       lhs.set();
-      REQUIRE_THAT(lhs, bitset_equals_string("1111111"));
+      CHECK_THAT(lhs, bitset_equals_string("1111111"));
     }
 
     SECTION("reset") {
       lhs.reset();
-      REQUIRE_THAT(lhs, bitset_equals_string("0000000"));
+      CHECK_THAT(lhs, bitset_equals_string("0000000"));
     }
 
     std::string_view rhs_str = "0111001";
@@ -215,17 +215,17 @@ TEST_CASE("bitwise operations") {
 
     SECTION("bitwise and") {
       lhs &= rhs;
-      REQUIRE_THAT(lhs, bitset_equals_string("0101001"));
+      CHECK_THAT(lhs, bitset_equals_string("0101001"));
     }
 
     SECTION("bitwise or") {
       lhs |= rhs;
-      REQUIRE_THAT(lhs, bitset_equals_string("1111101"));
+      CHECK_THAT(lhs, bitset_equals_string("1111101"));
     }
 
     SECTION("bitwise xor") {
       lhs ^= rhs;
-      REQUIRE_THAT(lhs, bitset_equals_string("1010100"));
+      CHECK_THAT(lhs, bitset_equals_string("1010100"));
     }
   }
 
@@ -235,7 +235,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("flip") {
       lhs.flip();
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("00001001000101111011010000010111100100000000111110011001101101110100011011001010")
       );
@@ -243,7 +243,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("set") {
       lhs.set();
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("11111111111111111111111111111111111111111111111111111111111111111111111111111111")
       );
@@ -251,7 +251,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("reset") {
       lhs.reset();
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("00000000000000000000000000000000000000000000000000000000000000000000000000000000")
       );
@@ -263,7 +263,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("bitwise and") {
       lhs &= rhs;
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("00010110011010000100001101100000000001000010000001000110010010000011000100110101")
       );
@@ -271,7 +271,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("bitwise or") {
       lhs |= rhs;
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("11111110111010000111101111111001011011111111001001111110010010111111111110111111")
       );
@@ -279,7 +279,7 @@ TEST_CASE("bitwise operations") {
 
     SECTION("bitwise xor") {
       lhs ^= rhs;
-      REQUIRE_THAT(
+      CHECK_THAT(
           lhs,
           bitset_equals_string("11101000100000000011100010011001011010111101001000111000000000111100111010001010")
       );
@@ -290,9 +290,9 @@ TEST_CASE("bitwise operations") {
 TEST_CASE("bitset::all/any/count") {
   SECTION("empty") {
     bitset bs;
-    REQUIRE(bs.all() == true);
-    REQUIRE(bs.any() == false);
-    REQUIRE(bs.count() == 0);
+    CHECK(bs.all() == true);
+    CHECK(bs.any() == false);
+    CHECK(bs.count() == 0);
   }
 
   SECTION("single word") {
@@ -301,9 +301,9 @@ TEST_CASE("bitset::all/any/count") {
 
     std::size_t ones = std::ranges::count(str, '1');
     bitset bs(str);
-    REQUIRE(bs.all() == (ones == str.size()));
-    REQUIRE(bs.any() == (ones != 0));
-    REQUIRE(bs.count() == ones);
+    CHECK(bs.all() == (ones == str.size()));
+    CHECK(bs.any() == (ones != 0));
+    CHECK(bs.count() == ones);
   }
 
   SECTION("multiple words") {
@@ -316,9 +316,9 @@ TEST_CASE("bitset::all/any/count") {
 
     std::size_t ones = std::ranges::count(str, '1');
     bitset bs(str);
-    REQUIRE(bs.all() == (ones == str.size()));
-    REQUIRE(bs.any() == (ones != 0));
-    REQUIRE(bs.count() == ones);
+    CHECK(bs.all() == (ones == str.size()));
+    CHECK(bs.any() == (ones != 0));
+    CHECK(bs.count() == ones);
   }
 }
 
@@ -327,11 +327,11 @@ TEST_CASE("bitset comparison") {
     bitset bs_1;
     bitset bs_2;
 
-    REQUIRE(bs_1 == bs_2);
-    REQUIRE_FALSE(bs_1 != bs_2);
+    CHECK(bs_1 == bs_2);
+    CHECK_FALSE(bs_1 != bs_2);
 
-    REQUIRE(bs_1 == bs_1);
-    REQUIRE_FALSE(bs_1 != bs_1);
+    CHECK(bs_1 == bs_1);
+    CHECK_FALSE(bs_1 != bs_1);
   }
 
   SECTION("single word") {
@@ -343,11 +343,11 @@ TEST_CASE("bitset comparison") {
     const bitset bs_2(str_2);
 
     if (str_1 == str_2) {
-      REQUIRE(bs_1 == bs_2);
-      REQUIRE_FALSE(bs_1 != bs_2);
+      CHECK(bs_1 == bs_2);
+      CHECK_FALSE(bs_1 != bs_2);
     } else {
-      REQUIRE(bs_1 != bs_2);
-      REQUIRE_FALSE(bs_1 == bs_2);
+      CHECK(bs_1 != bs_2);
+      CHECK_FALSE(bs_1 == bs_2);
     }
   }
 
@@ -365,11 +365,11 @@ TEST_CASE("bitset comparison") {
     const bitset bs_2(str_2);
 
     if (str_1 == str_2) {
-      REQUIRE(bs_1 == bs_2);
-      REQUIRE_FALSE(bs_1 != bs_2);
+      CHECK(bs_1 == bs_2);
+      CHECK_FALSE(bs_1 != bs_2);
     } else {
-      REQUIRE(bs_1 != bs_2);
-      REQUIRE_FALSE(bs_1 == bs_2);
+      CHECK(bs_1 != bs_2);
+      CHECK_FALSE(bs_1 == bs_2);
     }
   }
 }

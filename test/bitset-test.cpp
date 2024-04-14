@@ -13,9 +13,9 @@
 TEST_CASE("bitset default constructor") {
   bitset bs;
 
-  REQUIRE(bs.empty());
-  REQUIRE(bs.size() == 0);
-  REQUIRE(bs.begin() == bs.end());
+  CHECK(bs.empty());
+  CHECK(bs.size() == 0);
+  CHECK(bs.begin() == bs.end());
 }
 
 TEST_CASE("bitset constructor from size and vaue") {
@@ -25,17 +25,17 @@ TEST_CASE("bitset constructor from size and vaue") {
   SECTION("empty") {
     bitset bs(0, bit);
 
-    REQUIRE(bs.empty());
-    REQUIRE(bs.size() == 0);
-    REQUIRE(bs.begin() == bs.end());
+    CHECK(bs.empty());
+    CHECK(bs.size() == 0);
+    CHECK(bs.begin() == bs.end());
   }
 
   SECTION("single word") {
     bitset bs(7, bit);
 
-    REQUIRE_FALSE(bs.empty());
-    REQUIRE(bs.size() == 7);
-    REQUIRE(bs.begin() + 7 == bs.end());
+    CHECK_FALSE(bs.empty());
+    CHECK(bs.size() == 7);
+    CHECK(bs.begin() + 7 == bs.end());
 
     for (std::size_t i = 0; i < 7; ++i) {
       CAPTURE(i);
@@ -46,9 +46,9 @@ TEST_CASE("bitset constructor from size and vaue") {
   SECTION("multiple words") {
     bitset bs(80, bit);
 
-    REQUIRE_FALSE(bs.empty());
-    REQUIRE(bs.size() == 80);
-    REQUIRE(bs.begin() + 80 == bs.end());
+    CHECK_FALSE(bs.empty());
+    CHECK(bs.size() == 80);
+    CHECK(bs.begin() + 80 == bs.end());
 
     for (std::size_t i = 0; i < 80; ++i) {
       CAPTURE(i);
@@ -61,23 +61,23 @@ TEST_CASE("bitset constructor from string") {
   SECTION("empty") {
     const bitset bs("");
 
-    REQUIRE(bs.empty());
-    REQUIRE(bs.size() == 0);
-    REQUIRE(bs.begin() == bs.end());
+    CHECK(bs.empty());
+    CHECK(bs.size() == 0);
+    CHECK(bs.begin() == bs.end());
   }
 
   SECTION("single word") {
     std::string_view str = "1101101";
     const bitset bs(str);
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 
   SECTION("multiple words") {
     std::string_view str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
     const bitset bs(str);
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 }
 
@@ -86,9 +86,9 @@ TEST_CASE("bitset copy constructor") {
     const bitset bs;
     bitset copy = bs;
 
-    REQUIRE(bs.empty());
-    REQUIRE(bs.size() == 0);
-    REQUIRE(bs.begin() == bs.end());
+    CHECK(bs.empty());
+    CHECK(bs.size() == 0);
+    CHECK(bs.begin() == bs.end());
   }
 
   SECTION("single word") {
@@ -96,7 +96,7 @@ TEST_CASE("bitset copy constructor") {
     const bitset bs(str);
     bitset copy = bs;
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 
   SECTION("multiple words") {
@@ -104,7 +104,7 @@ TEST_CASE("bitset copy constructor") {
     const bitset bs(str);
     bitset copy = bs;
 
-    REQUIRE_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, bitset_equals_string(str));
   }
 }
 
@@ -114,9 +114,9 @@ TEST_CASE("bitset constructor from view") {
 
     bitset bs(source.subview(3, 0));
 
-    REQUIRE(bs.empty());
-    REQUIRE(bs.size() == 0);
-    REQUIRE(bs.begin() == bs.end());
+    CHECK(bs.empty());
+    CHECK(bs.size() == 0);
+    CHECK(bs.begin() == bs.end());
   }
 
   SECTION("single word") {
@@ -126,7 +126,7 @@ TEST_CASE("bitset constructor from view") {
     CAPTURE(offset);
 
     bitset bs(source.subview(offset, 5));
-    REQUIRE_THAT(bs, bitset_equals_string(str.substr(offset, 5)));
+    CHECK_THAT(bs, bitset_equals_string(str.substr(offset, 5)));
   }
 
   SECTION("multiple words") {
@@ -142,14 +142,14 @@ TEST_CASE("bitset constructor from view") {
     CAPTURE(offset, count);
 
     bitset bs(source.subview(offset, count));
-    REQUIRE_THAT(bs, bitset_equals_string(str.substr(offset, count)));
+    CHECK_THAT(bs, bitset_equals_string(str.substr(offset, count)));
   }
 }
 
 TEST_CASE("to_string(bitset)") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
   const bitset bs(str);
-  REQUIRE(to_string(bs) == str);
+  CHECK(to_string(bs) == str);
 }
 
 TEST_CASE("ostream << bitset") {
@@ -158,5 +158,5 @@ TEST_CASE("ostream << bitset") {
 
   std::stringstream ss;
   ss << bs;
-  REQUIRE(ss.str() == str);
+  CHECK(ss.str() == str);
 }

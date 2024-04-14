@@ -21,8 +21,8 @@ TEST_CASE("bitset forward iteration") {
 
     bitset bs(str);
 
-    REQUIRE_THAT(bs, Catch::Matchers::RangeEquals(bools));
-    REQUIRE_THAT(std::as_const(bs), Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(bs, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(std::as_const(bs), Catch::Matchers::RangeEquals(bools));
   }
 
   SECTION("multiple words") {
@@ -31,8 +31,8 @@ TEST_CASE("bitset forward iteration") {
 
     bitset bs(str);
 
-    REQUIRE_THAT(bs, Catch::Matchers::RangeEquals(bools));
-    REQUIRE_THAT(std::as_const(bs), Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(bs, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(std::as_const(bs), Catch::Matchers::RangeEquals(bools));
   }
 }
 
@@ -49,8 +49,8 @@ TEST_CASE("bitset backward iteration") {
 
     bitset bs(str);
 
-    REQUIRE_THAT(bs | std::views::reverse, Catch::Matchers::RangeEquals(bools));
-    REQUIRE_THAT(std::as_const(bs) | std::views::reverse, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(bs | std::views::reverse, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(std::as_const(bs) | std::views::reverse, Catch::Matchers::RangeEquals(bools));
   }
 
   SECTION("multiple words") {
@@ -59,8 +59,8 @@ TEST_CASE("bitset backward iteration") {
 
     bitset bs(str);
 
-    REQUIRE_THAT(bs | std::views::reverse, Catch::Matchers::RangeEquals(bools));
-    REQUIRE_THAT(std::as_const(bs) | std::views::reverse, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(bs | std::views::reverse, Catch::Matchers::RangeEquals(bools));
+    CHECK_THAT(std::as_const(bs) | std::views::reverse, Catch::Matchers::RangeEquals(bools));
   }
 }
 
@@ -71,7 +71,7 @@ TEST_CASE("bitset is iterable") {
 
     for (std::size_t i = 0; auto bit : bs) {
       CAPTURE(i);
-      CHECK(bit == (str[i] == '1'));
+      REQUIRE(bit == (str[i] == '1'));
       ++i;
     }
   }
@@ -98,7 +98,7 @@ TEST_CASE("bitset is writable when iterating") {
 
   for (std::size_t i = 0; auto bit : bs) {
     CAPTURE(i);
-    CHECK((bit ? '1' : '0') == str[i]);
+    REQUIRE((bit ? '1' : '0') == str[i]);
     ++i;
   }
 }
