@@ -17,7 +17,7 @@
 
 В качестве категории стоит выбрать random-access.
 
-Для итераторов не нужно реализовывать `operator->` (всё равно он не имеет смысла для `bool`). При этом type member `pointer` у итератора можно оставить равным `void`, а в качестве `reference` укажите, что посчитаете нужным.
+Для итераторов не нужно реализовывать `operator->` (всё равно он не имеет смысла для `bool`). При этом type member `pointer` у итератора можно оставить равным `void`.
 
 Из-за этих упрощений получившийся итератор, вероятно, не будет строго удовлетворять требованиям [LegacyForwardIterator](https://en.cppreference.com/w/cpp/named_req/ForwardIterator), однако будет удовлетворять требованиям итераторов нового образца ([forward_iterator](https://en.cppreference.com/w/cpp/iterator/forward_iterator)) из C++20.
 
