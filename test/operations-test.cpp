@@ -90,21 +90,6 @@ TEST_CASE("right shift") {
     CHECK_THAT(bs, bitset_equals_string(str));
   }
 
-  SECTION("single word") {
-    std::string str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    bitset bs(str);
-
-    std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
-    CAPTURE(shift_count);
-
-    bs >>= shift_count;
-
-    std::size_t erased = std::min(shift_count, str.size());
-    str.erase(str.size() - erased);
-
-    CHECK_THAT(bs, bitset_equals_string(str));
-  }
-
   SECTION("multiple words") {
     std::string str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
     bitset bs(str);
