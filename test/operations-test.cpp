@@ -359,3 +359,28 @@ TEST_CASE("bitset comparison") {
     }
   }
 }
+
+TEST_CASE("view operations") {
+  bitset bs("1110010101");
+
+  bitset::const_view bs_view_1 = bs.subview(0, 5);
+  bitset::const_view bs_view_2 = bs.subview(5);
+
+  CHECK((bs_view_1 & bs_view_2) == bitset("10100"));
+  CHECK((bs_view_1 | bs_view_2) == bitset("11101"));
+  CHECK((bs_view_1 ^ bs_view_2) == bitset("01001"));
+  CHECK(~bs_view_1 == bitset("00011"));
+  CHECK(bs_view_1.count() == 3);
+
+  bs.subview()[0] = false;
+  CHECK(bs == bitset("0110010101"));
+
+  bs.subview(5).flip();
+  CHECK(bs == bitset("0110001010"));
+
+  bs.subview(2, 3).set();
+  CHECK(bs == bitset("0111101010"));
+
+  bs.subview(2, 3) ^= bs.subview(7, 3);
+  CHECK(bs == bitset("0110101010"));
+}
