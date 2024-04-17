@@ -72,7 +72,7 @@ View для битсета интересен тем, что над ним то�
 - `bitset operator&(const bitset& lhs, const bitset& rhs)` &mdash; побитовое "и";
 - `bitset operator|(const bitset& lhs, const bitset& rhs)` &mdash; побитовое "или";
 - `bitset operator^(const bitset& lhs, const bitset& rhs)` &mdash; побитовый "xor";
-- `bitset operator~(const bitset& lhs, const bitset& rhs)` &mdash; побитовая инверсия;
+- `bitset operator~(const bitset& bs)` &mdash; побитовая инверсия;
 - `bitset operator<<(const bitset& bs, std::size_t count)` &mdash; битовый сдвиг влево `bs` на `count`;
 - `bitset operator>>(const bitset& bs, std::size_t count)` &mdash; битовый сдвиг вправо `bs` на `count`.
 
