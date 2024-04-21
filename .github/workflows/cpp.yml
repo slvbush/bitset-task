@@ -146,6 +146,7 @@ jobs:
               sleep 30
             fi
           done
+          echo "$(jq -r '.report' <<<"$json")"
           echo "$(jq -r '.report' <<<"$json")" >> $GITHUB_STEP_SUMMARY
           if [[ $(jq '.success' <<<"$json") = false ]]; then
             exit 1
