@@ -378,9 +378,37 @@ TEST_CASE("view operations") {
   bs.subview(5).flip();
   CHECK(bs == bitset("0110001010"));
 
-  bs.subview(2, 3).set();
+  const bitset::view bs_view_3 = bs.subview(2, 3);
+  bs_view_3.set();
   CHECK(bs == bitset("0111101010"));
 
   bs.subview(2, 3) ^= bs.subview(7, 3);
   CHECK(bs == bitset("0110101010"));
+
+  bs.subview() &= std::as_const(bs).subview();
+  CHECK(bs == bitset("0110101010"));
+}
+
+TEST_CASE("chained view operations") {
+  bitset bs_1("0011000011");
+  bitset bs_2("1110010101");
+
+  bitset::view bs_view_1 = bs_1.subview();
+  bitset::view bs_view_2 = bs_2.subview();
+
+  bs_view_1 |= bs_view_2.flip();
+  CHECK(bs_1 == bitset("0011101011"));
+  CHECK(bs_2 == bitset("0001101010"));
+
+  bs_view_1.flip() |= bs_view_2;
+  CHECK(bs_1 == bitset("1101111110"));
+  CHECK(bs_2 == bitset("0001101010"));
+
+  bs_view_1 &= std::as_const(bs_view_2).flip();
+  CHECK(bs_1 == bitset("1100010100"));
+  CHECK(bs_2 == bitset("1110010101"));
+
+  std::as_const(bs_view_1).flip() &= bs_view_2;
+  CHECK(bs_1 == bitset("0010000001"));
+  CHECK(bs_2 == bitset("1110010101"));
 }
