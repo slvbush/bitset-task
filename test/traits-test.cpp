@@ -23,8 +23,12 @@ TEST_CASE("member types") {
     STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::Iterator>::difference_type, std::ptrdiff_t>);
     STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::ConstIterator>::difference_type, std::ptrdiff_t>);
 
-    STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::Iterator>::iterator_category, std::random_access_iterator_tag>);
-    STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::ConstIterator>::iterator_category, std::random_access_iterator_tag>);
+    STATIC_CHECK(std::is_same_v<
+                 std::iterator_traits<BitSet::Iterator>::iterator_category,
+                 std::random_access_iterator_tag>);
+    STATIC_CHECK(std::is_same_v<
+                 std::iterator_traits<BitSet::ConstIterator>::iterator_category,
+                 std::random_access_iterator_tag>);
 
     STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::Iterator>::pointer, void>);
     STATIC_CHECK(std::is_same_v<std::iterator_traits<BitSet::ConstIterator>::pointer, void>);

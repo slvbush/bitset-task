@@ -149,14 +149,12 @@ TEST_CASE("bitset constructor from view or iterators") {
     std::string_view str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
     const BitSet source(str);
 
-    auto [offset, count] = GENERATE(
-        table<std::size_t, std::size_t>({
-            {0, 80},
-            {1, 79},
-            {60, 10},
-            {10, 60},
-        })
-    );
+    auto [offset, count] = GENERATE(table<std::size_t, std::size_t>({
+        {0, 80},
+        {1, 79},
+        {60, 10},
+        {10, 60},
+    }));
     CAPTURE(offset, count);
 
     SECTION("view") {
