@@ -13,7 +13,7 @@ namespace ct::test {
 
 TEST_CASE("left shift") {
   SECTION("empty") {
-    bitset bs;
+    BitSet bs;
     std::string str;
 
     SECTION("without reallocation") {
@@ -23,7 +23,7 @@ TEST_CASE("left shift") {
       bs <<= shift_count;
 
       str.append(shift_count, '0');
-      CHECK_THAT(bs, bitset_equals_string(str));
+      CHECK_THAT(bs, BitSetEqualsString(str));
     }
 
     SECTION("with reallocation") {
@@ -33,13 +33,13 @@ TEST_CASE("left shift") {
       bs <<= shift_count;
 
       str.append(shift_count, '0');
-      CHECK_THAT(bs, bitset_equals_string(str));
+      CHECK_THAT(bs, BitSetEqualsString(str));
     }
   }
 
   SECTION("single word") {
     std::string str = "1101101";
-    bitset bs(str);
+    BitSet bs(str);
 
     std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
     CAPTURE(shift_count);
@@ -47,12 +47,12 @@ TEST_CASE("left shift") {
     bs <<= shift_count;
 
     str.append(shift_count, '0');
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 
   SECTION("multiple words") {
     std::string str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    bitset bs(str);
+    BitSet bs(str);
 
     std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
     CAPTURE(shift_count);
@@ -60,13 +60,13 @@ TEST_CASE("left shift") {
     bs <<= shift_count;
 
     str.append(shift_count, '0');
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 }
 
 TEST_CASE("right shift") {
   SECTION("empty") {
-    bitset bs;
+    BitSet bs;
 
     std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
     CAPTURE(shift_count);
@@ -80,7 +80,7 @@ TEST_CASE("right shift") {
 
   SECTION("single word") {
     std::string str = "1101101";
-    bitset bs(str);
+    BitSet bs(str);
 
     std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
     CAPTURE(shift_count);
@@ -90,12 +90,12 @@ TEST_CASE("right shift") {
     std::size_t erased = std::min(shift_count, str.size());
     str.erase(str.size() - erased);
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 
   SECTION("multiple words") {
     std::string str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    bitset bs(str);
+    BitSet bs(str);
 
     std::size_t shift_count = GENERATE(0, 1, 5, 64, 190);
     CAPTURE(shift_count);
@@ -105,13 +105,13 @@ TEST_CASE("right shift") {
     std::size_t erased = std::min(shift_count, str.size());
     str.erase(str.size() - erased);
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 }
 
 TEST_CASE("bitwise operations") {
   SECTION("empty") {
-    bitset bs;
+    BitSet bs;
 
     bs &= bs;
     REQUIRE(bs.empty());
@@ -135,7 +135,7 @@ TEST_CASE("bitwise operations") {
   SECTION("single bit") {
     bool lhs_bit = GENERATE(false, true);
     CAPTURE(lhs_bit);
-    bitset lhs(1, lhs_bit);
+    BitSet lhs(1, lhs_bit);
 
     SECTION("flip") {
       lhs.flip();
@@ -157,7 +157,7 @@ TEST_CASE("bitwise operations") {
 
     bool rhs_bit = GENERATE(false, true);
     CAPTURE(rhs_bit);
-    bitset rhs(1, rhs_bit);
+    BitSet rhs(1, rhs_bit);
 
     SECTION("bitwise and") {
       lhs &= rhs;
@@ -180,52 +180,52 @@ TEST_CASE("bitwise operations") {
 
   SECTION("single word") {
     std::string_view lhs_str = "1101101";
-    bitset lhs(lhs_str);
+    BitSet lhs(lhs_str);
 
     SECTION("flip") {
       lhs.flip();
-      CHECK_THAT(lhs, bitset_equals_string("0010010"));
+      CHECK_THAT(lhs, BitSetEqualsString("0010010"));
     }
 
     SECTION("set") {
       lhs.set();
-      CHECK_THAT(lhs, bitset_equals_string("1111111"));
+      CHECK_THAT(lhs, BitSetEqualsString("1111111"));
     }
 
     SECTION("reset") {
       lhs.reset();
-      CHECK_THAT(lhs, bitset_equals_string("0000000"));
+      CHECK_THAT(lhs, BitSetEqualsString("0000000"));
     }
 
     std::string_view rhs_str = "0111001";
     CAPTURE(rhs_str);
-    bitset rhs(rhs_str);
+    BitSet rhs(rhs_str);
 
     SECTION("bitwise and") {
       lhs &= rhs;
-      CHECK_THAT(lhs, bitset_equals_string("0101001"));
+      CHECK_THAT(lhs, BitSetEqualsString("0101001"));
     }
 
     SECTION("bitwise or") {
       lhs |= rhs;
-      CHECK_THAT(lhs, bitset_equals_string("1111101"));
+      CHECK_THAT(lhs, BitSetEqualsString("1111101"));
     }
 
     SECTION("bitwise xor") {
       lhs ^= rhs;
-      CHECK_THAT(lhs, bitset_equals_string("1010100"));
+      CHECK_THAT(lhs, BitSetEqualsString("1010100"));
     }
   }
 
   SECTION("multiple words") {
     std::string_view lhs_str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    bitset lhs(lhs_str);
+    BitSet lhs(lhs_str);
 
     SECTION("flip") {
       lhs.flip();
       CHECK_THAT(
           lhs,
-          bitset_equals_string("00001001000101111011010000010111100100000000111110011001101101110100011011001010")
+          BitSetEqualsString("00001001000101111011010000010111100100000000111110011001101101110100011011001010")
       );
     }
 
@@ -233,7 +233,7 @@ TEST_CASE("bitwise operations") {
       lhs.set();
       CHECK_THAT(
           lhs,
-          bitset_equals_string("11111111111111111111111111111111111111111111111111111111111111111111111111111111")
+          BitSetEqualsString("11111111111111111111111111111111111111111111111111111111111111111111111111111111")
       );
     }
 
@@ -241,19 +241,19 @@ TEST_CASE("bitwise operations") {
       lhs.reset();
       CHECK_THAT(
           lhs,
-          bitset_equals_string("00000000000000000000000000000000000000000000000000000000000000000000000000000000")
+          BitSetEqualsString("00000000000000000000000000000000000000000000000000000000000000000000000000000000")
       );
     }
 
     std::string_view rhs_str = "00011110011010000111001101110001000001000010001001011110010010110111011110111111";
     CAPTURE(rhs_str);
-    bitset rhs(rhs_str);
+    BitSet rhs(rhs_str);
 
     SECTION("bitwise and") {
       lhs &= rhs;
       CHECK_THAT(
           lhs,
-          bitset_equals_string("00010110011010000100001101100000000001000010000001000110010010000011000100110101")
+          BitSetEqualsString("00010110011010000100001101100000000001000010000001000110010010000011000100110101")
       );
     }
 
@@ -261,7 +261,7 @@ TEST_CASE("bitwise operations") {
       lhs |= rhs;
       CHECK_THAT(
           lhs,
-          bitset_equals_string("11111110111010000111101111111001011011111111001001111110010010111111111110111111")
+          BitSetEqualsString("11111110111010000111101111111001011011111111001001111110010010111111111110111111")
       );
     }
 
@@ -269,7 +269,7 @@ TEST_CASE("bitwise operations") {
       lhs ^= rhs;
       CHECK_THAT(
           lhs,
-          bitset_equals_string("11101000100000000011100010011001011010111101001000111000000000111100111010001010")
+          BitSetEqualsString("11101000100000000011100010011001011010111101001000111000000000111100111010001010")
       );
     }
   }
@@ -278,46 +278,46 @@ TEST_CASE("bitwise operations") {
 TEST_CASE("bitset assignment") {
   SECTION("assignment from bitset") {
     std::string str = "10111011111000111100100101000100100100010101000000100000101111100111000011010111";
-    bitset bs1("10101101001101100100101110111000001010101110101010100000100101001101010001101011");
-    const bitset bs2(str);
+    BitSet bs1("10101101001101100100101110111000001010101110101010100000100101001101010001101011");
+    const BitSet bs2(str);
 
     bs1 = bs2;
-    CHECK_THAT(bs1, bitset_equals_string(str));
+    CHECK_THAT(bs1, BitSetEqualsString(str));
   }
 
   SECTION("assignment from view") {
     std::string str = "10111011111000111100100101000100100100010101000000100000101111100111000011010111";
-    bitset bs1("10101101001101100100101110111000001010101110101010100000100101001101010001101011");
-    const bitset bs2("00000" + str + "11111");
+    BitSet bs1("10101101001101100100101110111000001010101110101010100000100101001101010001101011");
+    const BitSet bs2("00000" + str + "11111");
 
     bs1 = bs2.subview(5, 80);
-    CHECK_THAT(bs1, bitset_equals_string(str));
+    CHECK_THAT(bs1, BitSetEqualsString(str));
   }
 }
 
 TEST_CASE("bitset swap") {
   std::string str1 = "10101101001101100100101110111000001010101110101010100000100101001101010001101011";
   std::string str2 = "10111011111000111100100101000100100100010101000000100000101111100111000011010111";
-  bitset bs1(str1);
-  bitset bs2(str2);
+  BitSet bs1(str1);
+  BitSet bs2(str2);
 
   swap(bs1, bs2);
 
-  CHECK_THAT(bs1, bitset_equals_string(str2));
-  CHECK_THAT(bs2, bitset_equals_string(str1));
+  CHECK_THAT(bs1, BitSetEqualsString(str2));
+  CHECK_THAT(bs2, BitSetEqualsString(str1));
 }
 
 TEST_CASE("reference operations") {
   std::string str = "00001100111101111101011000011001001010101001111011101010110010000010001111111100";
   std::string str2 = "00011101001001000111010101110000110100010100010111110011001100011001010010100000";
-  bitset bs(str);
+  BitSet bs(str);
 
   SECTION("reference assignment") {
     for (std::size_t i = 0; i < str.size(); i++) {
-      bitset::reference ref = bs[i];
+      BitSet::Reference ref = bs[i];
       ref = (str2[i] == '1');
     }
-    CHECK_THAT(bs, bitset_equals_string(str2));
+    CHECK_THAT(bs, BitSetEqualsString(str2));
   }
 
   SECTION("reference flip") {
@@ -333,20 +333,20 @@ TEST_CASE("reference operations") {
 TEST_CASE("views swap") {
   std::string str1 = "10101101001101100100101110111000001010101110101010100000100101001101010001101011";
   std::string str2 = "10111011111000111100100101000100100100010101000000100000101111100111000011010111";
-  const bitset bs1("0000" + str1 + "1111");
-  const bitset bs2("111" + str2 + "000");
-  bitset::const_view view1 = bs1.subview(4, 80);
-  bitset::const_view view2 = bs2.subview(3, 80);
+  const BitSet bs1("0000" + str1 + "1111");
+  const BitSet bs2("111" + str2 + "000");
+  BitSet::ConstView view1 = bs1.subview(4, 80);
+  BitSet::ConstView view2 = bs2.subview(3, 80);
 
   swap(view1, view2);
 
-  CHECK_THAT(bitset(view1), bitset_equals_string(str2));
-  CHECK_THAT(bitset(view2), bitset_equals_string(str1));
+  CHECK_THAT(BitSet(view1), BitSetEqualsString(str2));
+  CHECK_THAT(BitSet(view2), BitSetEqualsString(str1));
 }
 
 TEST_CASE("bitset::all/any/count") {
   SECTION("empty") {
-    bitset bs;
+    BitSet bs;
     CHECK(bs.all() == true);
     CHECK(bs.any() == false);
     CHECK(bs.count() == 0);
@@ -357,7 +357,7 @@ TEST_CASE("bitset::all/any/count") {
     CAPTURE(str);
 
     std::size_t ones = std::ranges::count(str, '1');
-    bitset bs(str);
+    BitSet bs(str);
     CHECK(bs.all() == (ones == str.size()));
     CHECK(bs.any() == (ones != 0));
     CHECK(bs.count() == ones);
@@ -372,7 +372,7 @@ TEST_CASE("bitset::all/any/count") {
     CAPTURE(str);
 
     std::size_t ones = std::ranges::count(str, '1');
-    bitset bs(str);
+    BitSet bs(str);
     CHECK(bs.all() == (ones == str.size()));
     CHECK(bs.any() == (ones != 0));
     CHECK(bs.count() == ones);
@@ -381,8 +381,8 @@ TEST_CASE("bitset::all/any/count") {
 
 TEST_CASE("bitset comparison") {
   SECTION("empty") {
-    bitset bs_1;
-    bitset bs_2;
+    BitSet bs_1;
+    BitSet bs_2;
 
     CHECK(bs_1 == bs_2);
     CHECK_FALSE(bs_1 != bs_2);
@@ -396,8 +396,8 @@ TEST_CASE("bitset comparison") {
     std::string_view str_2 = GENERATE("10110", "10111", "101101", "101110");
     CAPTURE(str_1, str_2);
 
-    const bitset bs_1(str_1);
-    const bitset bs_2(str_2);
+    const BitSet bs_1(str_1);
+    const BitSet bs_2(str_2);
 
     if (str_1 == str_2) {
       CHECK(bs_1 == bs_2);
@@ -418,8 +418,8 @@ TEST_CASE("bitset comparison") {
     std::string_view str_2 = GENERATE_REF(from_range(strings));
     CAPTURE(str_1, str_2);
 
-    const bitset bs_1(str_1);
-    const bitset bs_2(str_2);
+    const BitSet bs_1(str_1);
+    const BitSet bs_2(str_2);
 
     if (str_1 == str_2) {
       CHECK(bs_1 == bs_2);
@@ -432,58 +432,58 @@ TEST_CASE("bitset comparison") {
 }
 
 TEST_CASE("view operations") {
-  bitset bs("1110010101");
+  BitSet bs("1110010101");
 
-  bitset::const_view bs_view_1 = bs.subview(0, 5);
-  bitset::const_view bs_view_2 = bs.subview(5);
+  BitSet::ConstView bs_view_1 = bs.subview(0, 5);
+  BitSet::ConstView bs_view_2 = bs.subview(5);
 
-  CHECK((bs_view_1 & bs_view_2) == bitset("10100"));
-  CHECK((bs_view_1 | bs_view_2) == bitset("11101"));
-  CHECK((bs_view_1 ^ bs_view_2) == bitset("01001"));
-  CHECK((bs_view_2 << 2) == bitset("1010100"));
-  CHECK((bs_view_1 >> 3) == bitset("11"));
-  CHECK(~bs_view_1 == bitset("00011"));
+  CHECK((bs_view_1 & bs_view_2) == BitSet("10100"));
+  CHECK((bs_view_1 | bs_view_2) == BitSet("11101"));
+  CHECK((bs_view_1 ^ bs_view_2) == BitSet("01001"));
+  CHECK((bs_view_2 << 2) == BitSet("1010100"));
+  CHECK((bs_view_1 >> 3) == BitSet("11"));
+  CHECK(~bs_view_1 == BitSet("00011"));
   CHECK(bs_view_1.count() == 3);
 
   bs.subview()[0] = false;
-  CHECK(bs == bitset("0110010101"));
+  CHECK(bs == BitSet("0110010101"));
 
   bs.subview(5).flip();
-  CHECK(bs == bitset("0110001010"));
+  CHECK(bs == BitSet("0110001010"));
 
-  const bitset::view bs_view_3 = bs.subview(2, 3);
+  const BitSet::View bs_view_3 = bs.subview(2, 3);
   bs_view_3.set();
-  CHECK(bs == bitset("0111101010"));
+  CHECK(bs == BitSet("0111101010"));
 
   bs.subview(2, 3) ^= bs.subview(7, 3);
-  CHECK(bs == bitset("0110101010"));
+  CHECK(bs == BitSet("0110101010"));
 
   bs.subview() &= std::as_const(bs).subview();
-  CHECK(bs == bitset("0110101010"));
+  CHECK(bs == BitSet("0110101010"));
 }
 
 TEST_CASE("chained view operations") {
-  bitset bs_1("0011000011");
-  bitset bs_2("1110010101");
+  BitSet bs_1("0011000011");
+  BitSet bs_2("1110010101");
 
-  bitset::view bs_view_1 = bs_1.subview();
-  bitset::view bs_view_2 = bs_2.subview();
+  BitSet::View bs_view_1 = bs_1.subview();
+  BitSet::View bs_view_2 = bs_2.subview();
 
   bs_view_1 |= bs_view_2.flip();
-  CHECK(bs_1 == bitset("0011101011"));
-  CHECK(bs_2 == bitset("0001101010"));
+  CHECK(bs_1 == BitSet("0011101011"));
+  CHECK(bs_2 == BitSet("0001101010"));
 
   bs_view_1.flip() |= bs_view_2;
-  CHECK(bs_1 == bitset("1101111110"));
-  CHECK(bs_2 == bitset("0001101010"));
+  CHECK(bs_1 == BitSet("1101111110"));
+  CHECK(bs_2 == BitSet("0001101010"));
 
   bs_view_1 &= std::as_const(bs_view_2).flip();
-  CHECK(bs_1 == bitset("1100010100"));
-  CHECK(bs_2 == bitset("1110010101"));
+  CHECK(bs_1 == BitSet("1100010100"));
+  CHECK(bs_2 == BitSet("1110010101"));
 
   std::as_const(bs_view_1).flip() &= bs_view_2;
-  CHECK(bs_1 == bitset("0010000001"));
-  CHECK(bs_2 == bitset("1110010101"));
+  CHECK(bs_1 == BitSet("0010000001"));
+  CHECK(bs_2 == BitSet("1110010101"));
 }
 
 } // namespace ct::test

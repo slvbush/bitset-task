@@ -9,10 +9,10 @@ std::vector<bool> string_to_bools(std::string_view str) {
   return {view.begin(), view.end()};
 }
 
-bitset_equals_string::bitset_equals_string(std::string_view expected)
+BitSetEqualsString::BitSetEqualsString(std::string_view expected)
     : _expected(expected) {}
 
-bool bitset_equals_string::match(const bitset& actual) const {
+bool BitSetEqualsString::match(const BitSet& actual) const {
   if (actual.empty() != _expected.empty()) {
     return false;
   }
@@ -28,7 +28,7 @@ bool bitset_equals_string::match(const bitset& actual) const {
   return true;
 }
 
-std::string bitset_equals_string::describe() const {
+std::string BitSetEqualsString::describe() const {
   if (_expected.empty()) {
     return "is empty";
   } else {

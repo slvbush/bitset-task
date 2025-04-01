@@ -10,10 +10,10 @@ namespace ct::test {
 
 std::vector<bool> string_to_bools(std::string_view str);
 
-struct bitset_equals_string : Catch::Matchers::MatcherBase<bitset> {
-  explicit bitset_equals_string(std::string_view expected);
+struct BitSetEqualsString : Catch::Matchers::MatcherBase<BitSet> {
+  explicit BitSetEqualsString(std::string_view expected);
 
-  bool match(const bitset& actual) const final;
+  bool match(const BitSet& actual) const final;
 
   std::string describe() const final;
 

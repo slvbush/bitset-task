@@ -12,13 +12,13 @@ namespace ct::test {
 
 TEST_CASE("to_string(bitset)") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
-  const bitset bs(str);
+  const BitSet bs(str);
   CHECK(to_string(bs) == str);
 }
 
 TEST_CASE("ostream << bitset") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
-  bitset bs(str);
+  BitSet bs(str);
 
   std::stringstream ss;
   ss << bs;
@@ -27,14 +27,14 @@ TEST_CASE("ostream << bitset") {
 
 TEST_CASE("to_string(const_view)") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
-  const bitset bs(str);
+  const BitSet bs(str);
 
   CHECK(to_string(bs.subview(2, 20)) == str.substr(2, 20));
 }
 
 TEST_CASE("ostream << const_view") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
-  const bitset bs(str);
+  const BitSet bs(str);
 
   std::stringstream ss;
   ss << bs.subview(2, 20);

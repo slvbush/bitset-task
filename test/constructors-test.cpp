@@ -10,19 +10,19 @@
 namespace ct::test {
 
 TEST_CASE("bitset default constructor") {
-  bitset bs;
+  BitSet bs;
 
   CHECK(bs.empty());
   CHECK(bs.size() == 0);
   CHECK(bs.begin() == bs.end());
 }
 
-TEST_CASE("bitset constructor from size and vaue") {
+TEST_CASE("bitset constructor from size and value") {
   bool bit = GENERATE(false, true);
   CAPTURE(bit);
 
   SECTION("empty") {
-    bitset bs(0, bit);
+    BitSet bs(0, bit);
 
     CHECK(bs.empty());
     CHECK(bs.size() == 0);
@@ -30,7 +30,7 @@ TEST_CASE("bitset constructor from size and vaue") {
   }
 
   SECTION("single word") {
-    bitset bs(7, bit);
+    BitSet bs(7, bit);
 
     CHECK_FALSE(bs.empty());
     CHECK(bs.size() == 7);
@@ -43,7 +43,7 @@ TEST_CASE("bitset constructor from size and vaue") {
   }
 
   SECTION("multiple words") {
-    bitset bs(80, bit);
+    BitSet bs(80, bit);
 
     CHECK_FALSE(bs.empty());
     CHECK(bs.size() == 80);
@@ -58,7 +58,7 @@ TEST_CASE("bitset constructor from size and vaue") {
 
 TEST_CASE("bitset constructor from string") {
   SECTION("empty") {
-    const bitset bs("");
+    const BitSet bs("");
 
     CHECK(bs.empty());
     CHECK(bs.size() == 0);
@@ -67,23 +67,23 @@ TEST_CASE("bitset constructor from string") {
 
   SECTION("single word") {
     std::string_view str = "1101101";
-    const bitset bs(str);
+    const BitSet bs(str);
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 
   SECTION("multiple words") {
     std::string_view str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    const bitset bs(str);
+    const BitSet bs(str);
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 }
 
 TEST_CASE("bitset copy constructor") {
   SECTION("empty") {
-    const bitset bs;
-    bitset copy = bs;
+    const BitSet bs;
+    BitSet copy = bs;
 
     CHECK(bs.empty());
     CHECK(bs.size() == 0);
@@ -92,27 +92,27 @@ TEST_CASE("bitset copy constructor") {
 
   SECTION("single word") {
     std::string_view str = "1101101";
-    const bitset bs(str);
-    bitset copy = bs;
+    const BitSet bs(str);
+    BitSet copy = bs;
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 
   SECTION("multiple words") {
     std::string_view str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    const bitset bs(str);
-    bitset copy = bs;
+    const BitSet bs(str);
+    BitSet copy = bs;
 
-    CHECK_THAT(bs, bitset_equals_string(str));
+    CHECK_THAT(bs, BitSetEqualsString(str));
   }
 }
 
 TEST_CASE("bitset constructor from view or iterators") {
   SECTION("empty") {
-    const bitset source("1101101");
+    const BitSet source("1101101");
 
     SECTION("view") {
-      bitset bs(source.subview(3, 0));
+      BitSet bs(source.subview(3, 0));
 
       CHECK(bs.empty());
       CHECK(bs.size() == 0);
@@ -120,7 +120,7 @@ TEST_CASE("bitset constructor from view or iterators") {
     }
 
     SECTION("iterators") {
-      bitset bs(source.begin() + 3, source.begin() + 3);
+      BitSet bs(source.begin() + 3, source.begin() + 3);
 
       CHECK(bs.empty());
       CHECK(bs.size() == 0);
@@ -130,24 +130,24 @@ TEST_CASE("bitset constructor from view or iterators") {
 
   SECTION("single word") {
     std::string_view str = "1101101";
-    const bitset source(str);
+    const BitSet source(str);
     std::size_t offset = GENERATE(2, 3);
     CAPTURE(offset);
 
     SECTION("view") {
-      bitset bs(source.subview(offset, 5));
-      CHECK_THAT(bs, bitset_equals_string(str.substr(offset, 5)));
+      BitSet bs(source.subview(offset, 5));
+      CHECK_THAT(bs, BitSetEqualsString(str.substr(offset, 5)));
     }
 
     SECTION("iterators") {
-      bitset bs(source.begin() + offset, source.begin() + std::min(offset + 5, str.size()));
-      CHECK_THAT(bs, bitset_equals_string(str.substr(offset, 5)));
+      BitSet bs(source.begin() + offset, source.begin() + std::min(offset + 5, str.size()));
+      CHECK_THAT(bs, BitSetEqualsString(str.substr(offset, 5)));
     }
   }
 
   SECTION("multiple words") {
     std::string_view str = "11110110111010000100101111101000011011111111000001100110010010001011100100110101";
-    const bitset source(str);
+    const BitSet source(str);
 
     auto [offset, count] = GENERATE(
         table<std::size_t, std::size_t>({
@@ -160,13 +160,13 @@ TEST_CASE("bitset constructor from view or iterators") {
     CAPTURE(offset, count);
 
     SECTION("view") {
-      bitset bs(source.subview(offset, count));
-      CHECK_THAT(bs, bitset_equals_string(str.substr(offset, count)));
+      BitSet bs(source.subview(offset, count));
+      CHECK_THAT(bs, BitSetEqualsString(str.substr(offset, count)));
     }
 
     SECTION("iterators") {
-      bitset bs(source.begin() + offset, source.begin() + offset + count);
-      CHECK_THAT(bs, bitset_equals_string(str.substr(offset, count)));
+      BitSet bs(source.begin() + offset, source.begin() + offset + count);
+      CHECK_THAT(bs, BitSetEqualsString(str.substr(offset, count)));
     }
   }
 }
