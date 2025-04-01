@@ -4,6 +4,8 @@
 
 #include <type_traits>
 
+namespace ct::test {
+
 TEST_CASE("member types") {
   SECTION("bitset") {
     STATIC_CHECK(std::is_same_v<bitset::value_type, bool>);
@@ -21,12 +23,8 @@ TEST_CASE("member types") {
     STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::iterator>::difference_type, std::ptrdiff_t>);
     STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::const_iterator>::difference_type, std::ptrdiff_t>);
 
-    STATIC_CHECK(std::is_same_v<
-                 std::iterator_traits<bitset::iterator>::iterator_category,
-                 std::random_access_iterator_tag>);
-    STATIC_CHECK(std::is_same_v<
-                 std::iterator_traits<bitset::const_iterator>::iterator_category,
-                 std::random_access_iterator_tag>);
+    STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::iterator>::iterator_category, std::random_access_iterator_tag>);
+    STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::const_iterator>::iterator_category, std::random_access_iterator_tag>);
 
     STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::iterator>::pointer, void>);
     STATIC_CHECK(std::is_same_v<std::iterator_traits<bitset::const_iterator>::pointer, void>);
@@ -42,3 +40,5 @@ TEST_CASE("member types") {
     STATIC_CHECK(std::is_same_v<bitset::const_view::const_reference, bitset::const_reference>);
   }
 }
+
+} // namespace ct::test

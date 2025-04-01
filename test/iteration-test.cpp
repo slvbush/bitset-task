@@ -8,6 +8,8 @@
 #include <ranges>
 #include <utility>
 
+namespace ct::test {
+
 TEST_CASE("bitset forward iteration") {
   SECTION("empty") {
     bitset bs;
@@ -128,3 +130,5 @@ TEST_CASE("empty subviews are equal") {
   const bitset bs_2("110101");
   CHECK(bs_1.subview(0, 0) == bs_2.subview(bs_2.size(), 0));
 }
+
+} // namespace ct::test

@@ -9,6 +9,8 @@
 #include <array>
 #include <utility>
 
+namespace ct::test {
+
 TEST_CASE("left shift") {
   SECTION("empty") {
     bitset bs;
@@ -483,3 +485,5 @@ TEST_CASE("chained view operations") {
   CHECK(bs_1 == bitset("0010000001"));
   CHECK(bs_2 == bitset("1110010101"));
 }
+
+} // namespace ct::test

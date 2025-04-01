@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <string_view>
 
+namespace ct {
+
 class bitset {
 public:
   using value_type = bool;
@@ -68,3 +70,5 @@ bool operator==(const bitset& left, const bitset& right);
 bool operator!=(const bitset& left, const bitset& right);
 
 void swap(bitset& lhs, bitset& rhs);
+
+} // namespace ct

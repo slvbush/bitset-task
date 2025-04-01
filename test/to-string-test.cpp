@@ -8,6 +8,8 @@
 #include <sstream>
 #include <string>
 
+namespace ct::test {
+
 TEST_CASE("to_string(bitset)") {
   std::string_view str = "11010001001101000100110100010011010001001101000100110100010011010001001101000100";
   const bitset bs(str);
@@ -38,3 +40,5 @@ TEST_CASE("ostream << const_view") {
   ss << bs.subview(2, 20);
   CHECK(ss.str() == str.substr(2, 20));
 }
+
+} // namespace ct::test

@@ -6,6 +6,8 @@
 
 #include <vector>
 
+namespace ct::test {
+
 std::vector<bool> string_to_bools(std::string_view str);
 
 struct bitset_equals_string : Catch::Matchers::MatcherBase<bitset> {
@@ -18,3 +20,5 @@ struct bitset_equals_string : Catch::Matchers::MatcherBase<bitset> {
 private:
   std::string_view _expected;
 };
+
+} // namespace ct::test

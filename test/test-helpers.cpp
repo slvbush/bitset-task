@@ -2,6 +2,8 @@
 
 #include <ranges>
 
+namespace ct::test {
+
 std::vector<bool> string_to_bools(std::string_view str) {
   auto view = str | std::views::transform([](char c) { return c == '1'; });
   return {view.begin(), view.end()};
@@ -33,3 +35,5 @@ std::string bitset_equals_string::describe() const {
     return "equals " + std::string(_expected);
   }
 }
+
+} // namespace ct::test
