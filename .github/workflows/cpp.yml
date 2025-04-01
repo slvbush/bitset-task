@@ -10,30 +10,28 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Check line breaks
         run: |
-          sudo apt-get install -y dos2unix
-          pushd $GITHUB_WORKSPACE
           ci-extra/check-lines.sh
-          popd
+
       - name: Run clang-format style check
-        # TODO use clang-format from a container
-        uses: jidicula/clang-format-action@v4.11.0
+        # TODO use native clang-format
+        uses: jidicula/clang-format-action@v4.14.0
         with:
           clang-format-version: '19'
           check-path: '.'
 
   test:
     needs: formatting-check
-    name: "Test (${{ matrix.toolchain.os }}/${{ matrix.toolchain.compiler }}, ${{ matrix.build-type }})"
-
-    timeout-minutes: 15
+    name: "Test (${{ matrix.toolchain.os }}/${{ matrix.toolchain.compiler-id }}, ${{ matrix.build-type }})"
 
     strategy:
+      fail-fast: false
       matrix:
         toolchain:
-          - { os: Linux, compiler: GCC,   runner-label: gcc-14 }
-          - { os: Linux, compiler: Clang, runner-label: clang-19 }
+          - { os: Linux, compiler-id: GCC,   runner-label: gcc-14 }
+          - { os: Linux, compiler-id: Clang, runner-label: clang-19 }
         build-type:
           - Release
           - Debug
@@ -44,8 +42,7 @@ jobs:
     runs-on: [self-hosted, ubuntu, base, "${{ matrix.toolchain.runner-label }}"]
 
     env:
-      CT_CMAKE_PRESET: "CI-${{ matrix.toolchain.compiler }}-${{ matrix.build-type }}"
-      VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+      CT_CMAKE_PRESET: "Default-${{ matrix.build-type }}"
 
     defaults:
       run:
@@ -57,12 +54,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Export GitHub Actions cache environment variables
-        uses: actions/github-script@v7
+      - name: Setup environment variables
+        uses: cardinalby/export-env-action@v2
         with:
-          script: |
-            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          envFile: .github/constants.env
 
       - name: Update tests
         run: |
