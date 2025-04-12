@@ -55,4 +55,20 @@ TEST_CASE("concepts") {
   STATIC_CHECK(std::random_access_iterator<BitSet::Iterator>);
 }
 
+TEST_CASE("triviality") {
+  SECTION("references") {
+    STATIC_CHECK(std::is_trivially_copyable_v<BitSet::Reference>);
+    STATIC_CHECK(std::is_trivially_copyable_v<BitSet::ConstReference>);
+    STATIC_CHECK_FALSE(std::is_default_constructible_v<BitSet::Reference>);
+  }
+  SECTION("iterators") {
+    STATIC_CHECK(std::is_trivial_v<BitSet::Iterator>);
+    STATIC_CHECK(std::is_trivial_v<BitSet::ConstIterator>);
+  }
+  SECTION("views") {
+    STATIC_CHECK(std::is_trivially_copyable_v<BitSet::View>);
+    STATIC_CHECK(std::is_trivially_copyable_v<BitSet::ConstView>);
+  }
+}
+
 } // namespace ct::test
