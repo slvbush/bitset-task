@@ -20,6 +20,7 @@ function(ct_set_compiler_warnings TARGET)
     -Wduplicated-branches # warn if an else-if has identical branches
     -Wduplicated-cond # warn if an if-else-if chain has duplicated conditions
     -Wsuggest-override # warn about overriding virtual functions without marking them with the override keyword
+    -Wno-array-bounds -Wno-stringop-overflow # disabled due to false positives (see GCC bug reports 110498 and 111273)
   )
 
   set(CLANG_WARNINGS
