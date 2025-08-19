@@ -76,4 +76,33 @@ TEST_CASE("conversions") {
   STATIC_CHECK(std::convertible_to<const BitSet::Iterator, const BitSet::ConstIterator>);
 }
 
+template <typename T, typename = decltype(std::declval<T>().flip())>
+static short flip_help(int);
+
+template <typename T>
+static long flip_help(...);
+
+template <typename T>
+struct has_method_flip {
+    static constexpr bool value = std::is_same_v<decltype(flip_help<T>(0)), short>;
+};
+
+TEST_CASE("сonst BitSet should not allow changing value via flip") {
+    STATIC_REQUIRE(!has_method_flip<BitSet::ConstReference>::value);
+}
+
+template <typename T, typename = decltype(std::declval<T>() = bool{})>
+static short eq_help(int);
+
+template <typename T>
+static long eq_help(...);
+
+template <typename T>
+struct has_method_equalize {
+    static constexpr bool value = std::is_same_v<decltype(eq_help<T>(0)), short>;
+};
+
+TEST_CASE("сonst BitSet should not allow changing value via =") {
+    STATIC_REQUIRE(!has_method_equalize<BitSet::ConstReference>::value);
+}
 } // namespace ct::test
